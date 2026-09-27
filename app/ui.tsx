@@ -1,13 +1,15 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 import {
-  ArrowUpRight,
   ArrowRight,
+  CaretLeft,
+  CaretRight,
   Check,
-  List,
-  X,
+  InstagramLogo,
+  YoutubeLogo,
 } from "@phosphor-icons/react";
 
 export function Reveal({
@@ -22,9 +24,9 @@ export function Reveal({
     <motion.div
       className={className}
       initial={false}
-      whileInView={reduce ? {} : { y: [16, 0] }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true, amount: 0.1 }}
+      whileInView={reduce ? {} : { y: [16, 0], opacity: [0.9, 1] }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.08 }}
     >
       {children}
     </motion.div>
@@ -58,16 +60,14 @@ export function PerformantVideo({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play().catch(() => {
-              // Autoplay policy or interrupt handling
-            });
+            video.play().catch(() => {});
           } else {
             video.pause();
           }
         });
       },
       {
-        rootMargin: "150px 0px",
+        rootMargin: "100px 0px",
         threshold: 0.05,
       },
     );
@@ -77,230 +77,277 @@ export function PerformantVideo({
   }, [reduce]);
 
   return (
-    <video
-      ref={videoRef}
-      className={className}
-      poster={poster}
-      muted
-      playsInline
-      loop
-      preload="metadata"
-      aria-label={ariaLabel}
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className="video-wrapper">
+      <video
+        ref={videoRef}
+        className={className}
+        poster={poster}
+        muted
+        playsInline
+        autoPlay
+        loop
+        preload="metadata"
+        aria-label={ariaLabel}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+    </div>
   );
 }
 
 export function Header() {
-  const [open, setOpen] = useState(false);
   return (
     <header className="header wrap">
-      <a className="brand" href="#" aria-label="VWC Vibrant Watch Company home">
-        <span>VWC</span>
-        <small>VIBRANT WATCH COMPANY</small>
+      <a className="brand-logo-link" href="#" aria-label="VWC Vibrant Watch Company Home">
+        <Image
+          src="/images/vwc-logo.png"
+          alt="VWC Vibrant Watch Company"
+          width={130}
+          height={38}
+          priority
+          className="header-logo"
+        />
       </a>
-      <nav aria-label="Main navigation" className={open ? "nav open" : "nav"}>
-        <a href="#designs" onClick={() => setOpen(false)}>
-          The designs
-        </a>
-        <a href="#products" onClick={() => setOpen(false)}>
-          Timepieces
-        </a>
-        <a href="#story" onClick={() => setOpen(false)}>
-          Our story
-        </a>
-        <a href="#custom" onClick={() => setOpen(false)}>
-          Custom pieces
-        </a>
-        <a className="nav-cta" href="#interest" onClick={() => setOpen(false)}>
-          Enquire now <ArrowUpRight size={18} />
-        </a>
-      </nav>
-      <button
-        className="menu-toggle"
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
-      >
-        {open ? <X size={26} /> : <List size={26} />}
-      </button>
+      <a className="header-cta-btn" href="#interest">
+        Join the List
+      </a>
     </header>
   );
 }
 
-const designs = [
+export const collectionWatches = [
   {
-    name: "The Botanical",
-    type: "Nature, in miniature",
-    video: "/video-1.mp4",
+    id: "ram-mandir",
+    index: "01 / 06",
+    name: "RAM MANDIR",
+    detail: "A tribute to India's heritage.",
+    edition: "ART EDITION",
+    description:
+      "An artistic interpretation of the iconic Ram Mandir, bringing Indian architecture and craftsmanship together on a Titan timepiece.",
     image: "/images/watch-botanical.webp",
-    alt: "Gold watch concept with painted burgundy flowers and burgundy strap",
-    className: "botanical",
+    alt: "Ram Mandir architectural miniature art on a Titan timepiece",
   },
   {
-    name: "The Blue Hour",
-    type: "A moment worth keeping",
+    id: "bengal-tiger",
+    index: "02 / 06",
+    name: "BENGAL TIGER",
+    detail: "The spirit of the wild.",
+    edition: "HERITAGE EDITION",
+    description:
+      "Inspired by India's majestic Bengal tiger, this design captures its raw character and commanding presence in a striking dial.",
     image: "/images/watch-blue.webp",
-    alt: "Hand-painted blue landscape watch concept with a navy leather strap",
-    className: "blue",
+    alt: "Bengal Tiger hand-painted artwork dial",
+  },
+  {
+    id: "tiranga",
+    index: "03 / 06",
+    name: "TIRANGA",
+    detail: "A symbol of pride.",
+    edition: "NATIONAL EDITION",
+    description:
+      "The colours of the Indian tricolour meet the iconic white G-Shock GA-2100 in a design celebrating India's identity.",
+    image: "/images/watch-botanical.webp",
+    alt: "Tiranga Indian tricolour artwork on white G-Shock GA-2100",
+  },
+  {
+    id: "chroma",
+    index: "04 / 06",
+    name: "CHROMA",
+    detail: "A celebration of colour.",
+    edition: "STUDIO EDITION",
+    description:
+      "A playful arrangement of multicoloured dots transforms a clean white dial into a vibrant expression of creativity.",
+    image: "/images/watch-blue.webp",
+    alt: "Chroma playful dots on clean white dial",
+  },
+  {
+    id: "aqua",
+    index: "05 / 06",
+    name: "AQUA",
+    detail: "A bold shade of blue.",
+    edition: "CHRONO EDITION",
+    description:
+      "A striking Tiffany-blue treatment against a black G-Shock, balanced with crisp white highlights for a distinctive contrast.",
+    image: "/images/watch-blue.webp",
+    alt: "Aqua Tiffany-blue treatment on black G-Shock",
+  },
+  {
+    id: "diet-coke",
+    index: "06 / 06",
+    name: "DIET COKE",
+    detail: "A classic colour combination.",
+    edition: "POP CULTURE EDITION",
+    description:
+      "Inspired by Diet Coke's iconic red and silver palette, this design brings a bold pop-culture influence to the G-Shock.",
+    image: "/images/watch-botanical.webp",
+    alt: "Diet Coke red and silver palette inspired custom G-Shock",
   },
 ];
 
-export function Collection() {
+export function CollectionSlider() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const watch = collectionWatches[currentIndex];
+
+  // Autoplay: advance every 4 seconds
+  const startAutoplay = () => {
+    stopAutoplay();
+    autoplayRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev === collectionWatches.length - 1 ? 0 : prev + 1));
+    }, 4000);
+  };
+
+  const stopAutoplay = () => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+    }
+  };
+
+  // Pause autoplay on interaction, resume after 6s idle
+  const pauseAndResume = () => {
+    stopAutoplay();
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(startAutoplay, 6000);
+  };
+
+  useEffect(() => {
+    startAutoplay();
+    return () => {
+      stopAutoplay();
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? collectionWatches.length - 1 : prev - 1));
+    pauseAndResume();
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === collectionWatches.length - 1 ? 0 : prev + 1));
+    pauseAndResume();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      handleNext();
+    }
+    if (touchStartX.current - touchEndX.current < -50) {
+      handlePrev();
+    }
+  };
+
+  const selectWatchForEnquiry = (name: string) => {
+    window.dispatchEvent(new CustomEvent("design-select", { detail: name }));
+  };
+
   return (
-    <div className="collection">
-      {designs.map((d) => (
-        <article className={`design-card ${d.className}`} key={d.name}>
-          <a
-            href={`#interest`}
-            onClick={() =>
-              window.dispatchEvent(
-                new CustomEvent("design-select", { detail: d.name }),
-              )
-            }
-            aria-label={`${d.name}. ${d.type}. Enquire now`}
+    <div className="collection-slider-container">
+      <div
+        className="collection-card-frame"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="card-image-display">
+          <button
+            className="carousel-nav-btn prev"
+            onClick={handlePrev}
+            aria-label="Previous watch"
           >
-            <div className="design-image">
-              {d.video ? (
-                <PerformantVideo
-                  src={d.video}
-                  poster={d.image}
-                  ariaLabel={d.alt}
-                />
-              ) : (
-                <Image
-                  src={d.image!}
-                  alt={d.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              )}
-              <span className="image-arrow">
-                <ArrowUpRight size={26} />
-              </span>
-            </div>
-            <div className="design-caption">
-              <h3>{d.name}</h3>
-              <p>{d.type}</p>
-            </div>
-          </a>
-        </article>
-      ))}
-    </div>
-  );
-}
+            <CaretLeft size={20} weight="bold" />
+          </button>
 
-export const products = [
-  {
-    id: "botanical-gold",
-    name: "The Botanical Gold",
-    tagline: "Indian flora miniature on ivory canvas",
-    edition: "Edition 01",
-    spec: "38mm · Rose Gold · Burgundy Leather",
-    image: "/images/watch-botanical.webp",
-    alt: "Hand-painted Botanical Gold watch dial on cream canvas",
-    status: "Available to Commission",
-  },
-  {
-    id: "botanical-noir",
-    name: "The Botanical Noir",
-    tagline: "Midnight blooms & gilded hour markers",
-    edition: "Edition 02",
-    spec: "38mm · Brushed Gold · Black Leather",
-    image: "/images/watch-botanical.webp",
-    alt: "Hand-painted Botanical Noir timepiece",
-    status: "Limited Edition",
-  },
-  {
-    id: "lotus-dawn",
-    name: "The Lotus Dawn",
-    tagline: "Water lily strokes on warm enamel",
-    edition: "Edition 03",
-    spec: "36mm · Champagne Gold · Silk Strap",
-    image: "/images/watch-botanical.webp",
-    alt: "Hand-painted Lotus Dawn gold wristwatch",
-    status: "Available to Commission",
-  },
-  {
-    id: "gulmohar-red",
-    name: "The Gulmohar Edit",
-    tagline: "Summer petals in deep crimson hues",
-    edition: "Edition 04",
-    spec: "40mm · Classic Gold · Tan Leather",
-    image: "/images/watch-botanical.webp",
-    alt: "Gulmohar Edit hand-painted wristwatch",
-    status: "Made to Order",
-  },
-  {
-    id: "royal-heritage",
-    name: "The Royal Heritage",
-    tagline: "Artisanal gold leaf & botanical motifs",
-    edition: "Edition 05",
-    spec: "38mm · 18k Plated · Burgundy Strap",
-    image: "/images/watch-botanical.webp",
-    alt: "Royal Heritage artisan hand-painted timepiece",
-    status: "Bespoke Only",
-  },
-];
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={watch.id}
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -60 }}
+              transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="carousel-image-inner"
+            >
+              <Image
+                src={watch.image}
+                alt={watch.alt}
+                fill
+                sizes="(max-width: 640px) 92vw, 560px"
+                className="carousel-watch-img"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
 
-export function ProductsSection() {
-  return (
-    <div className="products-grid">
-      {products.map((p, idx) => (
-        <article className="product-card" key={p.id}>
+          <button
+            className="carousel-nav-btn next"
+            onClick={handleNext}
+            aria-label="Next watch"
+          >
+            <CaretRight size={20} weight="bold" />
+          </button>
+        </div>
+
+        <div className="collection-card-details">
+          <span className="edition-number">{watch.index}</span>
+          <h3 className="watch-card-title">{watch.name}</h3>
+          <p className="watch-card-detail">{watch.detail}</p>
+          <p className="watch-card-description">{watch.description}</p>
+
           <a
             href="#interest"
-            onClick={() =>
-              window.dispatchEvent(
-                new CustomEvent("design-select", { detail: p.name }),
-              )
-            }
-            aria-label={`${p.name}. ${p.spec}. Enquire now`}
+            onClick={() => selectWatchForEnquiry(watch.name)}
+            className="card-view-story-link"
           >
-            <div className="product-image-container">
-              <span className="product-badge">{p.edition}</span>
-              <div className="product-image">
-                <Image
-                  src={p.image}
-                  alt={p.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  quality={85}
-                  loading={idx < 2 ? "eager" : "lazy"}
-                />
-              </div>
-              <span className="product-action-pill">
-                Enquire <ArrowUpRight size={16} />
-              </span>
-            </div>
-            <div className="product-info">
-              <div className="product-meta">
-                <span className="product-spec">{p.spec}</span>
-                <span className="product-status">{p.status}</span>
-              </div>
-              <h3>{p.name}</h3>
-              <p>{p.tagline}</p>
-            </div>
+            VIEW STORY <ArrowRight size={18} />
           </a>
-        </article>
-      ))}
+        </div>
+      </div>
+
+      <div className="carousel-dots" role="tablist" aria-label="Watches pagination">
+        {collectionWatches.map((w, idx) => (
+          <button
+            key={w.id}
+            role="tab"
+            aria-selected={idx === currentIndex}
+            aria-label={`Go to ${w.name}`}
+            className={`carousel-dot ${idx === currentIndex ? "active" : ""}`}
+            onClick={() => {
+              setCurrentIndex(idx);
+              pauseAndResume();
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
-export function InterestForm() {
-  const [design, setDesign] = useState("Explore the collection");
+export function EarlyAccessForm() {
+  const [selectedInterest, setSelectedInterest] = useState("First VWC Collection");
   const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const handler = (e: Event) => setDesign((e as CustomEvent<string>).detail);
+    const handler = (e: Event) => setSelectedInterest((e as CustomEvent<string>).detail);
     window.addEventListener("design-select", handler);
     return () => window.removeEventListener("design-select", handler);
   }, []);
 
-  async function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setState("loading");
     setErrorMessage("");
@@ -308,8 +355,9 @@ export function InterestForm() {
     const formData = new FormData(e.currentTarget);
     const payload = {
       name: formData.get("name"),
+      phone: formData.get("phone"),
       email: formData.get("email"),
-      interest: formData.get("interest") || design,
+      interest: selectedInterest,
       message: formData.get("message"),
     };
 
@@ -322,98 +370,146 @@ export function InterestForm() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Failed to submit enquiry");
+        throw new Error(data.error || "Failed to submit early access details");
       }
 
       setState("success");
     } catch (err) {
-      setErrorMessage((err as Error).message || "Something went wrong.");
+      setErrorMessage((err as Error).message || "Something went wrong. Please try again.");
       setState("error");
     }
   }
 
-  if (state === "success")
+  if (state === "success") {
     return (
-      <div className="form-success" role="status">
-        <Check size={42} />
-        <h3>A lovely place to start.</h3>
+      <div className="early-access-success" role="status">
+        <div className="success-icon-badge">
+          <Check size={36} color="#660033" weight="bold" />
+        </div>
+        <h3>You are on the list.</h3>
         <p>
-          Thank you for reaching out. We have received your enquiry and will be
-          in touch with you shortly.
+          Thank you for joining the VWC circle. We look forward to sharing our first collection and private launch updates with you soon.
         </p>
-        <button className="text-link" onClick={() => setState("idle")}>
-          Submit another enquiry <ArrowRight size={20} />
+        <button className="reset-form-btn" onClick={() => setState("idle")}>
+          Submit another request <ArrowRight size={16} />
         </button>
       </div>
     );
+  }
 
   return (
-    <form onSubmit={submit} className="enquiry-form">
+    <form onSubmit={handleSubmit} className="early-access-form" id="lead-form">
       {state === "error" && (
         <div className="form-error-banner" role="alert">
           {errorMessage}
         </div>
       )}
-      <div className="form-row">
-        <label>
-          Your name
-          <input
-            name="name"
-            autoComplete="name"
-            placeholder="First and last name"
-            required
-            maxLength={100}
-          />
-        </label>
-        <label>
-          Email address
-          <input
-            name="email"
-            type="email"
-            autoComplete="email"
-            placeholder="you@example.com"
-            required
-            maxLength={254}
-          />
-        </label>
+
+      <div className="form-field-group">
+        <input
+          name="name"
+          type="text"
+          placeholder="Your name"
+          required
+          maxLength={100}
+          autoComplete="name"
+          className="clean-input"
+        />
       </div>
-      <label>
-        I’m interested in
-        <select
-          name="interest"
-          value={design}
-          onChange={(e) => setDesign(e.target.value)}
-        >
-          <option>Explore the collection</option>
-          <option>The Botanical</option>
-          <option>The Blue Hour</option>
-          <option>The Botanical Gold</option>
-          <option>The Botanical Noir</option>
-          <option>The Lotus Dawn</option>
-          <option>The Gulmohar Edit</option>
-          <option>The Royal Heritage</option>
-          <option>A custom piece</option>
-          <option>A gift for someone</option>
-        </select>
-      </label>
-      <label>
-        A little about your idea <span className="optional">(optional)</span>
+
+      <div className="form-field-group">
+        <input
+          name="phone"
+          type="tel"
+          placeholder="Your mobile number"
+          maxLength={30}
+          autoComplete="tel"
+          className="clean-input"
+        />
+      </div>
+
+      <div className="form-field-group">
+        <input
+          name="email"
+          type="email"
+          placeholder="Your email address"
+          required
+          maxLength={254}
+          autoComplete="email"
+          className="clean-input"
+        />
+      </div>
+
+      <div className="form-field-group">
         <textarea
           name="message"
           rows={3}
+          placeholder="Tell us what you're looking for (optional)"
           maxLength={2000}
-          placeholder="A design you love, an occasion, a story…"
+          className="clean-input clean-textarea"
         />
-      </label>
-      <button className="button" type="submit" disabled={state === "loading"}>
-        {state === "loading" ? "Submitting..." : "Enquire now"}
-        <ArrowUpRight size={21} />
+      </div>
+
+      <button className="primary-burgundy-btn" type="submit" disabled={state === "loading"}>
+        {state === "loading" ? "Submitting..." : "GET EARLY ACCESS"}
+        <ArrowRight size={18} weight="bold" />
       </button>
-      <p className="form-note">
-        We respect your privacy. Your details are securely recorded.
-      </p>
+
+      <div className="form-note-block">
+        <p className="form-sub-note">Be part of the first VWC collection.</p>
+        <p className="form-disclaimer">
+          Your details will only be used for VWC launch updates and relevant communication.
+        </p>
+      </div>
     </form>
   );
 }
 
+export function Footer() {
+  return (
+    <footer className="vwc-footer wrap">
+      <div className="footer-top-rule" />
+      <div className="footer-body">
+        <div className="footer-brand-col">
+          <Image
+            src="/images/vwc-logo.png"
+            alt="VWC Vibrant Watch Company"
+            width={120}
+            height={36}
+            className="footer-logo"
+          />
+        </div>
 
+        <div className="footer-tagline-col">
+          <p>Hand-Painted Watches • Custom Pieces • Crafted in India.</p>
+        </div>
+
+        <div className="footer-social-col">
+          <div className="social-links">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="VWC on Instagram"
+              className="social-icon"
+            >
+              <InstagramLogo size={22} weight="regular" />
+            </a>
+            <a
+              href="https://youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="VWC on YouTube"
+              className="social-icon"
+            >
+              <YoutubeLogo size={22} weight="regular" />
+            </a>
+          </div>
+          <p className="footer-copyright">
+            © 2026 VWC - Vibrant Watch Company
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}

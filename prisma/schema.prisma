@@ -10,6 +10,7 @@ generator client {
 model Lead {
   id        String   @id @default(cuid())
   name      String
+  phone     String?
   email     String
   interest  String
   message   String?

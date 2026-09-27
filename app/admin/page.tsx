@@ -19,6 +19,7 @@ export default async function AdminPage() {
   const leads = rawLeads.map((l) => ({
     id: l.id,
     name: l.name,
+    phone: l.phone,
     email: l.email,
     interest: l.interest,
     message: l.message,

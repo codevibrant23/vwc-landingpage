@@ -4,7 +4,7 @@ import { isAuthenticated } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, interest, message } = await req.json();
+    const { name, phone, email, interest, message } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json(
@@ -16,8 +16,9 @@ export async function POST(req: Request) {
     const lead = await prisma.lead.create({
       data: {
         name: String(name).slice(0, 100),
+        phone: phone ? String(phone).slice(0, 30) : null,
         email: String(email).slice(0, 254),
-        interest: String(interest || "Explore the collection").slice(0, 100),
+        interest: String(interest || "VWC Early Access").slice(0, 100),
         message: message ? String(message).slice(0, 2000) : null,
       },
     });

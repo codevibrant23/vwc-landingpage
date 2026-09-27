@@ -6,6 +6,7 @@ import {
   SignOut,
   Trash,
   Envelope,
+  Phone,
   User,
   Clock,
   Tag,
@@ -17,6 +18,7 @@ import {
 interface Lead {
   id: string;
   name: string;
+  phone?: string | null;
   email: string;
   interest: string;
   message: string | null;
@@ -176,6 +178,12 @@ export function AdminDashboard({ initialLeads }: { initialLeads: Lead[] }) {
                             )}
                           </button>
                         </div>
+                        {lead.phone && (
+                          <div className="lead-email-row" style={{ marginTop: "4px" }}>
+                            <Phone size={14} />
+                            <span>{lead.phone}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
