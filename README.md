@@ -1,7 +1,7 @@
 # Vibrant Watch Company
 
 A mobile-first, frontend-only Next.js landing page for hand-painted watches.
-
+   
 ## Run
 
 ```sh
