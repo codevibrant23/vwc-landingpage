@@ -8,8 +8,6 @@ import {
   CaretLeft,
   CaretRight,
   Check,
-  InstagramLogo,
-  YoutubeLogo,
 } from "@phosphor-icons/react";
 
 export function Reveal({
@@ -98,18 +96,19 @@ export function PerformantVideo({
 export function Header() {
   return (
     <header className="header wrap">
-      <a className="brand-logo-link" href="#" aria-label="VWC Vibrant Watch Company Home">
+      <a
+        className="brand-logo-link"
+        href="#"
+        aria-label="VWC Vibrant Watch Company Home"
+      >
         <Image
-          src="/images/vwc-logo.png"
+          src="/vwc-logo.PNG"
           alt="VWC Vibrant Watch Company"
-          width={130}
-          height={38}
+          width={140}
+          height={42}
           priority
           className="header-logo"
         />
-      </a>
-      <a className="header-cta-btn" href="#interest">
-        Join the List
       </a>
     </header>
   );
@@ -120,11 +119,10 @@ export const collectionWatches = [
     id: "ram-mandir",
     index: "01 / 06",
     name: "RAM MANDIR",
-    detail: "A tribute to India's heritage.",
-    edition: "ART EDITION",
+    detail: "A tribute to India\u2019s heritage.",
     description:
       "An artistic interpretation of the iconic Ram Mandir, bringing Indian architecture and craftsmanship together on a Titan timepiece.",
-    image: "/images/watch-botanical.webp",
+    image: "/rammandir.webp",
     alt: "Ram Mandir architectural miniature art on a Titan timepiece",
   },
   {
@@ -132,10 +130,9 @@ export const collectionWatches = [
     index: "02 / 06",
     name: "BENGAL TIGER",
     detail: "The spirit of the wild.",
-    edition: "HERITAGE EDITION",
     description:
-      "Inspired by India's majestic Bengal tiger, this design captures its raw character and commanding presence in a striking dial.",
-    image: "/images/watch-blue.webp",
+      "Inspired by India\u2019s majestic Bengal tiger, this design captures its raw character and commanding presence in a striking dial.",
+    image: "/lion.webp",
     alt: "Bengal Tiger hand-painted artwork dial",
   },
   {
@@ -143,10 +140,9 @@ export const collectionWatches = [
     index: "03 / 06",
     name: "TIRANGA",
     detail: "A symbol of pride.",
-    edition: "NATIONAL EDITION",
     description:
-      "The colours of the Indian tricolour meet the iconic white G-Shock GA-2100 in a design celebrating India's identity.",
-    image: "/images/watch-botanical.webp",
+      "The colours of the Indian tricolour meet the iconic white G-Shock GA-2100 in a design celebrating India\u2019s identity.",
+    image: "/tiranga.webp",
     alt: "Tiranga Indian tricolour artwork on white G-Shock GA-2100",
   },
   {
@@ -154,10 +150,9 @@ export const collectionWatches = [
     index: "04 / 06",
     name: "CHROMA",
     detail: "A celebration of colour.",
-    edition: "STUDIO EDITION",
     description:
       "A playful arrangement of multicoloured dots transforms a clean white dial into a vibrant expression of creativity.",
-    image: "/images/watch-blue.webp",
+    image: "/chroma.webp",
     alt: "Chroma playful dots on clean white dial",
   },
   {
@@ -165,10 +160,9 @@ export const collectionWatches = [
     index: "05 / 06",
     name: "AQUA",
     detail: "A bold shade of blue.",
-    edition: "CHRONO EDITION",
     description:
       "A striking Tiffany-blue treatment against a black G-Shock, balanced with crisp white highlights for a distinctive contrast.",
-    image: "/images/watch-blue.webp",
+    image: "/aqua.webp",
     alt: "Aqua Tiffany-blue treatment on black G-Shock",
   },
   {
@@ -176,10 +170,9 @@ export const collectionWatches = [
     index: "06 / 06",
     name: "DIET COKE",
     detail: "A classic colour combination.",
-    edition: "POP CULTURE EDITION",
     description:
-      "Inspired by Diet Coke's iconic red and silver palette, this design brings a bold pop-culture influence to the G-Shock.",
-    image: "/images/watch-botanical.webp",
+      "Inspired by Diet Coke\u2019s iconic red and silver palette, this design brings a bold pop-culture influence to the G-Shock.",
+    image: "/diet-coke.webp",
     alt: "Diet Coke red and silver palette inspired custom G-Shock",
   },
 ];
@@ -197,7 +190,9 @@ export function CollectionSlider() {
   const startAutoplay = () => {
     stopAutoplay();
     autoplayRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev === collectionWatches.length - 1 ? 0 : prev + 1));
+      setCurrentIndex((prev) =>
+        prev === collectionWatches.length - 1 ? 0 : prev + 1,
+      );
     }, 4000);
   };
 
@@ -225,12 +220,16 @@ export function CollectionSlider() {
   }, []);
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? collectionWatches.length - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? collectionWatches.length - 1 : prev - 1,
+    );
     pauseAndResume();
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === collectionWatches.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) =>
+      prev === collectionWatches.length - 1 ? 0 : prev + 1,
+    );
     pauseAndResume();
   };
 
@@ -251,85 +250,103 @@ export function CollectionSlider() {
     }
   };
 
-  const selectWatchForEnquiry = (name: string) => {
-    window.dispatchEvent(new CustomEvent("design-select", { detail: name }));
-  };
-
   return (
     <div className="collection-slider-container">
-      <div
-        className="collection-card-frame"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="card-image-display">
-          <button
-            className="carousel-nav-btn prev"
-            onClick={handlePrev}
-            aria-label="Previous watch"
-          >
-            <CaretLeft size={20} weight="bold" />
-          </button>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={watch.id}
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -60 }}
-              transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="carousel-image-inner"
+      <div className="mobile-collection-slider">
+        <div
+          className="collection-card-frame"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="card-image-display">
+            <button
+              className="carousel-nav-btn prev"
+              onClick={handlePrev}
+              aria-label="Previous watch"
             >
-              <Image
-                src={watch.image}
-                alt={watch.alt}
-                fill
-                sizes="(max-width: 640px) 92vw, 560px"
-                className="carousel-watch-img"
-                priority
-              />
-            </motion.div>
-          </AnimatePresence>
+              <CaretLeft size={20} weight="bold" />
+            </button>
 
-          <button
-            className="carousel-nav-btn next"
-            onClick={handleNext}
-            aria-label="Next watch"
-          >
-            <CaretRight size={20} weight="bold" />
-          </button>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={watch.id}
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 }}
+                transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="carousel-image-inner"
+              >
+                <Image
+                  src={watch.image}
+                  alt={watch.alt}
+                  fill
+                  sizes="(max-width: 640px) 92vw, 560px"
+                  className="carousel-watch-img"
+                  priority
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            <button
+              className="carousel-nav-btn next"
+              onClick={handleNext}
+              aria-label="Next watch"
+            >
+              <CaretRight size={20} weight="bold" />
+            </button>
+          </div>
+
+          <div className="collection-card-details">
+            <span className="edition-number">{watch.index}</span>
+            <h3 className="watch-card-title">{watch.name}</h3>
+            <p className="watch-card-detail">{watch.detail}</p>
+            <p className="watch-card-description">{watch.description}</p>
+          </div>
         </div>
 
-        <div className="collection-card-details">
-          <span className="edition-number">{watch.index}</span>
-          <h3 className="watch-card-title">{watch.name}</h3>
-          <p className="watch-card-detail">{watch.detail}</p>
-          <p className="watch-card-description">{watch.description}</p>
-
-          <a
-            href="#interest"
-            onClick={() => selectWatchForEnquiry(watch.name)}
-            className="card-view-story-link"
-          >
-            VIEW STORY <ArrowRight size={18} />
-          </a>
+        <div
+          className="carousel-dots"
+          role="tablist"
+          aria-label="Watches pagination"
+        >
+          {collectionWatches.map((w, idx) => (
+            <button
+              key={w.id}
+              role="tab"
+              aria-selected={idx === currentIndex}
+              aria-label={`Go to ${w.name}`}
+              className={`carousel-dot ${idx === currentIndex ? "active" : ""}`}
+              onClick={() => {
+                setCurrentIndex(idx);
+                pauseAndResume();
+              }}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="carousel-dots" role="tablist" aria-label="Watches pagination">
-        {collectionWatches.map((w, idx) => (
-          <button
-            key={w.id}
-            role="tab"
-            aria-selected={idx === currentIndex}
-            aria-label={`Go to ${w.name}`}
-            className={`carousel-dot ${idx === currentIndex ? "active" : ""}`}
-            onClick={() => {
-              setCurrentIndex(idx);
-              pauseAndResume();
-            }}
-          />
+      <div className="desktop-collection-grid">
+        {collectionWatches.map((item) => (
+          <article className="desktop-watch-card" key={item.id}>
+            <div className="desktop-watch-image">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                fill
+                sizes="(max-width: 1200px) 16vw, 180px"
+              />
+            </div>
+            <div className="desktop-watch-copy">
+              <span className="edition-number">{item.index}</span>
+              <h3 className="watch-card-title">{item.name}</h3>
+              <p className="watch-card-detail">{item.detail}</p>
+              <p className="watch-card-description">{item.description}</p>
+              <a className="card-view-story-link" href="#interest">
+                View story <ArrowRight size={13} weight="bold" />
+              </a>
+            </div>
+          </article>
         ))}
       </div>
     </div>
@@ -337,15 +354,10 @@ export function CollectionSlider() {
 }
 
 export function EarlyAccessForm() {
-  const [selectedInterest, setSelectedInterest] = useState("First VWC Collection");
-  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "success" | "error">(
+    "idle",
+  );
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    const handler = (e: Event) => setSelectedInterest((e as CustomEvent<string>).detail);
-    window.addEventListener("design-select", handler);
-    return () => window.removeEventListener("design-select", handler);
-  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -357,7 +369,6 @@ export function EarlyAccessForm() {
       name: formData.get("name"),
       phone: formData.get("phone"),
       email: formData.get("email"),
-      interest: selectedInterest,
       message: formData.get("message"),
     };
 
@@ -375,7 +386,9 @@ export function EarlyAccessForm() {
 
       setState("success");
     } catch (err) {
-      setErrorMessage((err as Error).message || "Something went wrong. Please try again.");
+      setErrorMessage(
+        (err as Error).message || "Something went wrong. Please try again.",
+      );
       setState("error");
     }
   }
@@ -388,7 +401,8 @@ export function EarlyAccessForm() {
         </div>
         <h3>You are on the list.</h3>
         <p>
-          Thank you for joining the VWC circle. We look forward to sharing our first collection and private launch updates with you soon.
+          Thank you for joining the VWC circle. We look forward to sharing our
+          first collection and private launch updates with you soon.
         </p>
         <button className="reset-form-btn" onClick={() => setState("idle")}>
           Submit another request <ArrowRight size={16} />
@@ -409,7 +423,7 @@ export function EarlyAccessForm() {
         <input
           name="name"
           type="text"
-          placeholder="Your name"
+          placeholder="Name"
           required
           maxLength={100}
           autoComplete="name"
@@ -421,7 +435,7 @@ export function EarlyAccessForm() {
         <input
           name="phone"
           type="tel"
-          placeholder="Your mobile number"
+          placeholder="Phone number"
           maxLength={30}
           autoComplete="tel"
           className="clean-input"
@@ -432,7 +446,7 @@ export function EarlyAccessForm() {
         <input
           name="email"
           type="email"
-          placeholder="Your email address"
+          placeholder="Email ID"
           required
           maxLength={254}
           autoComplete="email"
@@ -444,21 +458,25 @@ export function EarlyAccessForm() {
         <textarea
           name="message"
           rows={3}
-          placeholder="Tell us what you're looking for (optional)"
+          placeholder="Message"
           maxLength={2000}
           className="clean-input clean-textarea"
         />
       </div>
 
-      <button className="primary-burgundy-btn" type="submit" disabled={state === "loading"}>
+      <button
+        className="primary-burgundy-btn"
+        type="submit"
+        disabled={state === "loading"}
+      >
         {state === "loading" ? "Submitting..." : "GET EARLY ACCESS"}
         <ArrowRight size={18} weight="bold" />
       </button>
 
       <div className="form-note-block">
-        <p className="form-sub-note">Be part of the first VWC collection.</p>
         <p className="form-disclaimer">
-          Your details will only be used for VWC launch updates and relevant communication.
+          Your details will only be used for VWC launch updates and relevant
+          communication.
         </p>
       </div>
     </form>
@@ -470,44 +488,23 @@ export function Footer() {
     <footer className="vwc-footer wrap">
       <div className="footer-top-rule" />
       <div className="footer-body">
-        <div className="footer-brand-col">
+        <div style={{ width: "100%", height: "auto" }}>
           <Image
-            src="/images/vwc-logo.png"
+            src="/vwc-logo.PNG"
             alt="VWC Vibrant Watch Company"
-            width={120}
-            height={36}
+            width={220}
+            height={80}
             className="footer-logo"
+            style={{ height: "auto" }}
           />
         </div>
 
         <div className="footer-tagline-col">
-          <p>Hand-Painted Watches • Custom Pieces • Crafted in India.</p>
+          <p>Hand-Painted Watches. Custom Pieces. Crafted in India.</p>
         </div>
 
-        <div className="footer-social-col">
-          <div className="social-links">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="VWC on Instagram"
-              className="social-icon"
-            >
-              <InstagramLogo size={22} weight="regular" />
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="VWC on YouTube"
-              className="social-icon"
-            >
-              <YoutubeLogo size={22} weight="regular" />
-            </a>
-          </div>
-          <p className="footer-copyright">
-            © 2026 VWC - Vibrant Watch Company
-          </p>
+        <div className="footer-copyright-col">
+          <p className="footer-copyright">© 2026 VWC - Vibrant Watch Company</p>
         </div>
       </div>
     </footer>
