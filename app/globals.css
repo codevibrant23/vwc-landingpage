@@ -83,7 +83,11 @@ button:disabled {
   color: #FFFFFF;
 }
 
-h1, h2, h3, h4, p {
+h1,
+h2,
+h3,
+h4,
+p {
   margin: 0;
 }
 
@@ -289,7 +293,7 @@ h1, h2, h3, h4, p {
 }
 
 .hero-subtext-bar {
-  margin-top: 14px;
+  margin-top: 0px;
   margin-bottom: 28px;
 }
 
@@ -555,8 +559,13 @@ h1, h2, h3, h4, p {
 }
 
 @keyframes dotFill {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
 
@@ -567,6 +576,16 @@ h1, h2, h3, h4, p {
 .early-access-section {
   padding-top: 48px;
   padding-bottom: 72px;
+}
+
+.early-access-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .form-content-block {
@@ -691,8 +710,7 @@ h1, h2, h3, h4, p {
 }
 
 .desktop-nav,
-.desktop-collection-grid,
-.early-access-image {
+.desktop-collection-grid {
   display: none;
 }
 
@@ -840,7 +858,7 @@ h1, h2, h3, h4, p {
     letter-spacing: -0.025em;
   }
 
-  .section-header-block > .section-heading br {
+  .section-header-block>.section-heading br {
     display: none;
   }
 
@@ -934,6 +952,9 @@ h1, h2, h3, h4, p {
     display: block;
     position: relative;
     min-height: 400px;
+    aspect-ratio: auto;
+    border-radius: 10px;
+    margin-bottom: 0;
     overflow: hidden;
   }
 
@@ -973,7 +994,7 @@ h1, h2, h3, h4, p {
     min-height: 62px;
   }
 
-  .early-access-form > .primary-burgundy-btn {
+  .early-access-form>.primary-burgundy-btn {
     justify-content: center;
     border-radius: 2px;
     padding-block: 12px;
@@ -1215,7 +1236,7 @@ h1, h2, h3, h4, p {
     min-height: 100px;
   }
 
-  .early-access-form > .primary-burgundy-btn {
+  .early-access-form>.primary-burgundy-btn {
     padding-block: 15px;
     font-size: 12px;
   }
