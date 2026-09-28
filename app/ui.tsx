@@ -179,8 +179,8 @@ export const collectionWatches = [
 
 export function CollectionSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -219,14 +219,16 @@ export function CollectionSlider() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handlePrev = () => {
+  const handlePrev = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) e.stopPropagation();
     setCurrentIndex((prev) =>
       prev === 0 ? collectionWatches.length - 1 : prev - 1,
     );
     pauseAndResume();
   };
 
-  const handleNext = () => {
+  const handleNext = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) e.stopPropagation();
     setCurrentIndex((prev) =>
       prev === collectionWatches.length - 1 ? 0 : prev + 1,
     );
@@ -235,6 +237,7 @@ export function CollectionSlider() {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -242,12 +245,16 @@ export function CollectionSlider() {
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      handleNext();
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const distance = touchStartX.current - touchEndX.current;
+      if (distance > 50) {
+        handleNext();
+      } else if (distance < -50) {
+        handlePrev();
+      }
     }
-    if (touchStartX.current - touchEndX.current < -50) {
-      handlePrev();
-    }
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
   return (
@@ -261,8 +268,11 @@ export function CollectionSlider() {
         >
           <div className="card-image-display">
             <button
+              type="button"
               className="carousel-nav-btn prev"
               onClick={handlePrev}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
               aria-label="Previous watch"
             >
               <CaretLeft size={20} weight="bold" />
@@ -271,10 +281,10 @@ export function CollectionSlider() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={watch.id}
-                initial={{ opacity: 0, x: 60 }}
+                initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -60 }}
-                transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="carousel-image-inner"
               >
                 <Image
@@ -289,8 +299,11 @@ export function CollectionSlider() {
             </AnimatePresence>
 
             <button
+              type="button"
               className="carousel-nav-btn next"
               onClick={handleNext}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
               aria-label="Next watch"
             >
               <CaretRight size={20} weight="bold" />
@@ -312,6 +325,7 @@ export function CollectionSlider() {
         >
           {collectionWatches.map((w, idx) => (
             <button
+              type="button"
               key={w.id}
               role="tab"
               aria-selected={idx === currentIndex}
