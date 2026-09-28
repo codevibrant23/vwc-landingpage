@@ -7,7 +7,7 @@ A mobile-first, frontend-only Next.js landing page for hand-painted watches.
 ```sh
 npm install
 npm run dev
-```
+```              
 
 Open http://localhost:3000. Production: `npm run build` then        `npm start`.
 
