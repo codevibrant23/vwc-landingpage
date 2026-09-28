@@ -2,7 +2,7 @@
 
 A mobile-first, frontend-only Next.js landing page for hand-painted watches.
    
-## Run
+## Run    
 
 ```sh
 npm install
