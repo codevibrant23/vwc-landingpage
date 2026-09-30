@@ -28,7 +28,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 0;
   overflow-x: hidden;
   background-color: var(--bg);
 }
@@ -350,7 +350,7 @@ p {
 ------------------------------------------------------------- */
 .collection-section {
   padding-top: 48px;
-  padding-bottom: 60px;
+  padding-bottom: 0px;
 }
 
 .section-header-block {
@@ -574,8 +574,9 @@ p {
    EARLY ACCESS / LEAD FORM SECTION
 ------------------------------------------------------------- */
 .early-access-section {
-  padding-top: 48px;
+  padding-top: 0;
   padding-bottom: 72px;
+  scroll-margin-top: 0;
 }
 
 .early-access-image {
@@ -590,6 +591,7 @@ p {
 
 .form-content-block {
   margin-top: 0;
+  scroll-margin-top: 16px;
 }
 
 .early-access-form {

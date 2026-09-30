@@ -74,7 +74,7 @@ export default function Home() {
         </section>
 
         {/* LEAD CAPTURE / EARLY ACCESS SECTION */}
-        <section className="early-access-section wrap" id="interest">
+        <section className="early-access-section wrap">
           <div className="early-access-image">
             <PerformantVideo
               src="/rammandir.mp4"
@@ -82,7 +82,7 @@ export default function Home() {
               ariaLabel="Ram Mandir watch artistry video"
             />
           </div>
-          <div className="form-content-block">
+          <div className="form-content-block" id="interest">
             <p className="section-eyebrow">VWC IS COMING SOON</p>
             <h2 className="section-heading">BE FIRST TO KNOW</h2>
             <p className="section-intro-text">
