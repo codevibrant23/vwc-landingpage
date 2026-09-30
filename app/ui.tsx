@@ -356,9 +356,9 @@ export function CollectionSlider() {
               <h3 className="watch-card-title">{item.name}</h3>
               <p className="watch-card-detail">{item.detail}</p>
               <p className="watch-card-description">{item.description}</p>
-              <a className="card-view-story-link" href="#interest">
+              {/* <a className="card-view-story-link" href="#interest">
                 View story <ArrowRight size={13} weight="bold" />
-              </a>
+              </a> */}
             </div>
           </article>
         ))}
@@ -513,7 +513,7 @@ export function Footer() {
           />
         </div>
 
-        <div className="footer-tagline-col">
+        <div style={{ width: "100%" }}>
           <p>Hand-Painted Watches. Custom Pieces. Crafted in India.</p>
         </div>
 
